@@ -1,13 +1,14 @@
-FROM node:18
+FROM ubuntu:22.04
 
-# Install yt-dlp, ffmpeg, and Python
 RUN apt-get update && \
     apt-get install -y python3 python3-pip ffmpeg && \
     pip3 install yt-dlp
 
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+COPY . /app
 WORKDIR /app
-COPY . .
 
-RUN npm install
+CMD ["python3", "server.js"]
 
-CMD ["node", "server.js"]
